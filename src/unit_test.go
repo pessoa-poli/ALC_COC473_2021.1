@@ -170,7 +170,7 @@ func TestLUViaCholeskyDecomposition(t *testing.T) {
 		vectorB:     [][]float64{},
 		TOLm:        0,
 	}
-	resultL, resultU := LUViaCholeskyDecomposition2(c)
+	resultL, resultU := LUViaCholeskyDecomposition(c)
 	fmt.Printf("Results are:\nL:%.2f\nU:%.2f\n", resultL, resultU)
 
 	for i := 0; i < len(resultShouldBeL); i++ {
