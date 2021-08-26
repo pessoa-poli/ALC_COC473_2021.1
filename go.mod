@@ -1,3 +1,3 @@
-module trab1
+module p1
 
 go 1.14

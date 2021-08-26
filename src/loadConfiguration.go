@@ -10,9 +10,13 @@ import (
 )
 
 var (
-	CONF_DAT_PATH             = "../conf.dat"
 	MATRIX_LINE_NUM_SEPARATOR = " "
+	CONFIGURATION             configuration
 )
+
+func initLoadConfigurations() {
+	CONFIGURATION = loadRunConfiguration(CONF_DAT_PATH)
+}
 
 type configuration struct {
 	systemOrder int
@@ -28,8 +32,9 @@ func readLineIntoFloat64Array(line string, vec *[]float64) {
 	stringArray := strings.Split(line, MATRIX_LINE_NUM_SEPARATOR)
 	numSlice := []float64{}
 	for i := range stringArray {
-		num, err := strconv.Atoi(stringArray[i])
+		num, err := strconv.ParseFloat(stringArray[i], 64)
 		if err != nil {
+			fmt.Printf("Error parsing line %v\n", line)
 			panic(err.Error())
 		}
 		numSlice = append(numSlice, float64(num))
@@ -63,8 +68,8 @@ func loadRunConfiguration(configurationFilePath string) (c configuration) {
 			if err != nil {
 				panic("conf.dat file probably has a mistake on the systemOrder field")
 			}
-			c.matrixA = initializeMatrixWithZeros(c.systemOrder, c.systemOrder)
-			c.vectorB = initializeMatrixWithZeros(c.systemOrder, 1)
+			c.matrixA = InitializeMatrixWithZeros(c.systemOrder, c.systemOrder)
+			c.vectorB = InitializeMatrixWithZeros(c.systemOrder, 1)
 		case 1:
 			c.ICOD, err = strconv.Atoi(line)
 			if err != nil {

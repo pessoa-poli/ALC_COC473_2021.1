@@ -24,7 +24,7 @@ func TestReadMatrixPairToMemory(t *testing.T) {
 
 func TestCheckIfMatricesCanMultiply(t *testing.T) {
 	matrix1, matrix2 := [][]float64{{2, 2}, {2, 2}}, [][]float64{{2, 2}, {2, 2}}
-	canMultiply := checkIfMatricesCanMultiply(matrix1, matrix2)
+	canMultiply := CheckIfMatricesCanMultiply(matrix1, matrix2)
 	fmt.Printf("Can matrices multiply? %v\n", canMultiply)
 	if !canMultiply {
 		log.Fatal("We should be able to multiply these matrices.")
@@ -33,7 +33,7 @@ func TestCheckIfMatricesCanMultiply(t *testing.T) {
 
 func TestMultiplyMatrices(t *testing.T) {
 	matrix1, matrix2 := [][]float64{{1, 2, 2}, {4, 4, 2}, {4, 6, 4}}, [][]float64{{1, 2, 3}, {1, 2, 3}, {1, 2, 3}}
-	result, _ := multiplyMatrices(matrix1, matrix2)
+	result, _ := MultiplyMatrices(matrix1, matrix2)
 	fmt.Printf("Result is: %v\n", result)
 	resultShouldBe := [][]float64{{5, 10, 15}, {10, 20, 30}, {14, 28, 42}}
 	for i := 0; i < len(result); i++ {
@@ -209,7 +209,7 @@ func TestSolutionViaCholeskyDecomposition(t *testing.T) {
 		vectorB:     vectorB,
 		TOLm:        1,
 	}
-	res := solutionViaCholeskyDecomposition(c)
+	res := SolutionViaCholeskyDecomposition(c)
 	for i := range res {
 		if resExpected[i][0] != res[i][0] {
 			fmt.Printf("Result was %v. It should be %v\n", res, resExpected)
@@ -217,4 +217,90 @@ func TestSolutionViaCholeskyDecomposition(t *testing.T) {
 		}
 	}
 	fmt.Println(res)
+}
+
+func TestWriteToFile(t *testing.T) {
+	someStuff := "asdqwdqwd"
+	WriteToFile("../thatfile.deleteme", someStuff)
+}
+
+func TestDeleteFile(t *testing.T) {
+	DeleteFile(OUTPUT_FILE_PATH)
+}
+
+func TestCreateMatrixString(t *testing.T) {
+	matrixA := [][]float64{{1, 0.2, 0.4}, {0.2, 1, 0.5}, {0.4, 0.5, 1}}
+	str := CreateMatrixString(matrixA)
+	fmt.Println(str)
+}
+
+func TestSolucaoPeloProcedimentoIterativoDeJacobi(t *testing.T) {
+	c := configuration{
+		systemOrder: 3,
+		ICOD:        0,
+		IDET:        0,
+		matrixA:     [][]float64{{3, -1, -1}, {-1, +3, -1}, {-1, -1, +3}},
+		vectorB:     [][]float64{{1}, {2}, {1}},
+		TOLm:        0.001,
+	}
+	res := SolucaoPeloProcedimentoIterativoDeJacobi(c)
+	fmt.Printf("A solucao encontrada foi %v\n", res)
+}
+
+func TestSolucaoPeloProcedimentoIterativoDeGaussSeidel(t *testing.T) {
+	c := configuration{
+		systemOrder: 3,
+		ICOD:        0,
+		IDET:        0,
+		matrixA:     [][]float64{{3, -1, -1}, {-1, +3, -1}, {-1, -1, +3}},
+		vectorB:     [][]float64{{1}, {2}, {1}},
+		TOLm:        0.001,
+	}
+	res := SolucaoPeloProcedimentoIterativoDeGaussSeidel(c)
+	fmt.Printf("A solucao encontrada foi %v\n", res)
+}
+
+func TestSolucaoViaMetodoDaPotencia(t *testing.T) {
+	c := configuration{
+		systemOrder: 3,
+		ICOD:        0,
+		IDET:        0,
+		matrixA:     [][]float64{{1, 0.2, 0}, {0.2, 1, 0.5}, {0, 0.5, 1}},
+		vectorB:     [][]float64{},
+		TOLm:        0.001,
+	}
+	autovalor, autovetor := SolucaoViaMetodoDaPotencia(c)
+	fmt.Printf("A solucao encontrada foi\nautovalor:%v\nautovetor:%v\n", autovalor, autovetor)
+}
+
+func TestAchaAutovaloresEAutovetoresViaMetodoDeJacobi(t *testing.T) {
+	c := configuration{
+		systemOrder: 3,
+		ICOD:        0,
+		IDET:        0,
+		matrixA:     [][]float64{{1, 0.2, 0}, {0.2, 1, 0.5}, {0, 0.5, 1}},
+		vectorB:     [][]float64{},
+		TOLm:        0.01,
+	}
+	autovalores, autovetores := AchaAutovaloresEAutovetoresViaMetodoDeJacobi(c)
+	autovaloresString := CreateMatrixString(autovalores)
+	autovetoresString := CreateMatrixString(autovetores)
+	fmt.Printf("A solucao encontrada foi\nautovalor:\n%s\nautovetor:\n%s\n", autovaloresString, autovetoresString)
+}
+
+func TestSolucaoViaMetodoDeJacobi(t *testing.T) {
+	c := configuration{
+		systemOrder: 3,
+		ICOD:        0,
+		IDET:        0,
+		matrixA:     [][]float64{{1, 0.2, 0}, {0.2, 1, 0.5}, {0, 0.5, 1}},
+		vectorB:     [][]float64{{1.2}, {1.7}, {1.5}},
+		TOLm:        0.01,
+	}
+	sol := SolucaoViaMetodoDeJacobi(c)
+	fmt.Printf("SolucaoEncontrada:\n%s\n", CreateMatrixString(sol))
+}
+
+func TestPw(t *testing.T) {
+	Pw(OUTPUT_FILE_PATH, "asdad")
 }

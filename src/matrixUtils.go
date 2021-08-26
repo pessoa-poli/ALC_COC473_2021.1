@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 )
 
 var (
@@ -49,7 +48,7 @@ func readMatrixPairToMemory(matrixFilePath string) (matrix1, matrix2 [][]float64
 		stringArray := strings.Split(lineText, ";")
 		var numArray []float64
 		for i := range stringArray {
-			num, err := strconv.Atoi(stringArray[i])
+			num, err := strconv.ParseFloat(stringArray[i], 64)
 			if err != nil {
 				panic(err.Error())
 			}
@@ -69,13 +68,13 @@ func readMatrixPairToMemory(matrixFilePath string) (matrix1, matrix2 [][]float64
 	return matrix1, matrix2
 }
 
-func checkIfMatricesCanMultiply(matrix1, matrix2 [][]float64) bool {
+func CheckIfMatricesCanMultiply(matrix1, matrix2 [][]float64) bool {
 	//Numbers of columns of matrix1 == num of lines of matrix 2 ?
 	return (len(matrix1[0]) == len(matrix2))
 }
 
-func initializeMatrixWithZeros(numOfRows, numOfColumns int) [][]float64 {
-	fmt.Printf("Initializing %vX%v matrix\n", numOfRows, numOfColumns)
+func InitializeMatrixWithZeros(numOfRows, numOfColumns int) [][]float64 {
+	//fmt.Printf("Initializing %vX%v matrix\n", numOfRows, numOfColumns)
 	//Innitialize an empty matrix
 	var initializedMatrix [][]float64 = [][]float64{}
 
@@ -88,17 +87,17 @@ func initializeMatrixWithZeros(numOfRows, numOfColumns int) [][]float64 {
 		}
 		initializedMatrix = append(initializedMatrix, zeroFilledRow)
 	}
-	fmt.Printf("Initialized matrix: %v\n", initializedMatrix)
+	//fmt.Printf("Initialized matrix: %v\n", initializedMatrix)
 	return initializedMatrix
 }
 
-func multiplyMatrices(matrix1, matrix2 [][]float64) (matrixResult [][]float64, canMultiply bool) {
-	fmt.Println(strings.Repeat("#", 15))
-	fmt.Println("Started matrix multiplication.")
-	start := time.Now()
+func MultiplyMatrices(matrix1, matrix2 [][]float64) (matrixResult [][]float64, canMultiply bool) {
+	//fmt.Println(strings.Repeat("#", 15))
+	//fmt.Println("Started matrix multiplication.")
+	//start := time.Now()
 
 	//Check if we can multiply the input matrices:
-	canMultiply = checkIfMatricesCanMultiply(matrix1, matrix2)
+	canMultiply = CheckIfMatricesCanMultiply(matrix1, matrix2)
 	if !canMultiply {
 		fmt.Println("The given matrices cannot be multiplied.\nCheck if your input was correct on file matrix.txt")
 		return [][]float64{}, false
@@ -108,13 +107,13 @@ func multiplyMatrices(matrix1, matrix2 [][]float64) (matrixResult [][]float64, c
 	resultMatrixNumOfColumns := len(matrix2[0])
 	resultMatrixNumOfRows := len(matrix1)
 	//initializeSaidMatrixWithZeros
-	matrixResult = initializeMatrixWithZeros(resultMatrixNumOfRows, resultMatrixNumOfColumns)
+	matrixResult = InitializeMatrixWithZeros(resultMatrixNumOfRows, resultMatrixNumOfColumns)
 
 	for i := 0; i < len(matrixResult); i++ {
 		for j := 0; j < len(matrixResult[0]); j++ {
 			//fmt.Printf("Finding total for a%v%v\n", i, j)
 			var total float64 = 0
-			for k := 0; k < len(matrixResult[0]); k++ {
+			for k := 0; k < len(matrixResult); k++ {
 				total = total + matrix1[i][k]*matrix2[k][j]
 				//fmt.Printf("total is: %v\n", total)
 			}
@@ -123,12 +122,12 @@ func multiplyMatrices(matrix1, matrix2 [][]float64) (matrixResult [][]float64, c
 		}
 	}
 
-	fmt.Println("Finished multiplying matrices.")
-	fmt.Printf("Entry matrices %v X %v \n", matrix1, matrix2)
-	fmt.Printf("Resulting matrix: %v\n", matrixResult)
-	timeElapsed := time.Since(start)
-	fmt.Printf("This operation took %v.\n", timeElapsed)
-	fmt.Println(strings.Repeat("#", 15))
+	//fmt.Println("Finished multiplying matrices.")
+	//fmt.Printf("Entry matrices %v X %v \n", matrix1, matrix2)
+	//fmt.Printf("Resulting matrix: %v\n", matrixResult)
+	//timeElapsed := time.Since(start)
+	//fmt.Printf("This operation took %v.\n", timeElapsed)
+	//fmt.Println(strings.Repeat("#", 15))
 	return matrixResult, canMultiply
 }
 
@@ -137,7 +136,7 @@ func createPivotMatrixM(matrix1 [][]float64, pivotColumn int) (pMatrixM [][]floa
 	//Get the size of the M matrix to produce.
 	miSize := len(matrix1)
 	//Initialize a zero matrix with this size.
-	pMatrixM = initializeMatrixWithZeros(miSize, miSize)
+	pMatrixM = InitializeMatrixWithZeros(miSize, miSize)
 
 	for i := 0; i < miSize; i++ {
 		for j := 0; j < miSize; j++ {
@@ -156,7 +155,7 @@ func createPivotMatrixM(matrix1 [][]float64, pivotColumn int) (pMatrixM [][]floa
 
 func generateLiMatrixFromUiMatrix(Ui [][]float64) (Li [][]float64) {
 	matrixSize := len(Ui)
-	Li = initializeMatrixWithZeros(matrixSize, matrixSize)
+	Li = InitializeMatrixWithZeros(matrixSize, matrixSize)
 	for i := 0; i < matrixSize; i++ {
 		for j := 0; j < matrixSize; j++ {
 			if i == j {
@@ -203,7 +202,7 @@ func forwardSubstitution(matrixA, vectorB [][]float64) (res [][]float64) {
 
 func backwardsSubstitution(matrixA, vectorB [][]float64) (res [][]float64) {
 	vectorBNumOfRows := len(vectorB)
-	res = initializeMatrixWithZeros(vectorBNumOfRows, 1)
+	res = InitializeMatrixWithZeros(vectorBNumOfRows, 1)
 	res[vectorBNumOfRows-1][0] = vectorB[vectorBNumOfRows-1][0] / matrixA[vectorBNumOfRows-1][vectorBNumOfRows-1]
 	for i := vectorBNumOfRows - 2; i >= 0; i-- {
 		var sum float64
@@ -216,4 +215,25 @@ func backwardsSubstitution(matrixA, vectorB [][]float64) (res [][]float64) {
 		res[i][0] = yi
 	}
 	return res
+}
+
+func checaSeMatrizAEPositivaDefinida(c configuration) (ePositivaDefinida bool) {
+	L, _ := LUViaCholeskyDecomposition(c)
+	for i := 0; i < c.systemOrder; i++ {
+		if L[i][i] == 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func checaSeMatrizESimetrica(c configuration) (eSimetrica bool) {
+	for i := 0; i < c.systemOrder; i++ {
+		for j := 0; j < c.systemOrder; j++ {
+			if c.matrixA[i][j] != c.matrixA[j][i] {
+				return false
+			}
+		}
+	}
+	return true
 }
