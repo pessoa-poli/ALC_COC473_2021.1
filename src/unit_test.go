@@ -105,6 +105,9 @@ func TestFindUAndLForGivenMatrix(t *testing.T) {
 func TestLoadRunConfiguration(t *testing.T) {
 	c := loadRunConfiguration(CONF_DAT_PATH)
 	fmt.Printf("%+v\n", c)
+	matAString := CreateMatrixString(c.matrixA)
+	vecBString := CreateMatrixString(c.vectorB)
+	fmt.Printf("MatA\n%s\nVecb\n%s\n", matAString, vecBString)
 }
 
 func TestForwardSubstitution(t *testing.T) {
@@ -303,4 +306,12 @@ func TestSolucaoViaMetodoDeJacobi(t *testing.T) {
 
 func TestPw(t *testing.T) {
 	Pw(OUTPUT_FILE_PATH, "asdad")
+}
+
+func TestRegressaoLinear(t *testing.T) {
+	regressaoLinear(CONFIGURATION)
+}
+
+func TestInterpolacaoDeLagrange(t *testing.T) {
+	interpolacaoLagrange(&CONFIGURATION)
 }

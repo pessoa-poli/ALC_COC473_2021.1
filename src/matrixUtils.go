@@ -237,3 +237,53 @@ func checaSeMatrizESimetrica(c configuration) (eSimetrica bool) {
 	}
 	return true
 }
+
+func trocaLinhasDaMatriz(linha1, linha2 int, mIn [][]float64) (mOut [][]float64) {
+	//ve quantas linhas tem na matriz
+	numOfRows := len(mIn)
+	//Preenche mOut
+	for i := 0; i < numOfRows; i++ {
+		if i == linha1 {
+			mOut[i] = mIn[linha2]
+			continue
+		}
+		if i == linha2 {
+			mOut[i] = mIn[linha1]
+			continue
+		}
+		mOut[i] = mIn[i]
+	}
+	return mOut
+}
+
+func trocaLinhasParaSubstituirPivotNulo(c *configuration) (m [][]float64, pivotsOrdenados bool) {
+	for i := 0; i < c.systemOrder; i++ {
+		if c.matrixA[i][i] == 0 {
+			//Achamos Pivot Nulo, vamos substituir essa linha pela próxima linha onde a coluna i não seja nula
+			achamosLinhaValidaParaSubstituicao := false
+			for j := i + 1; j < c.systemOrder; j++ {
+				if c.matrixA[j][j] != 0 {
+					//Achamos uma linha com a coluna i não nula
+					achamosLinhaValidaParaSubstituicao = true
+					//Cria uma matriz identidade
+					matrixPivotamento := criaMatrizIdentidade(*c)
+					//troca as linhas de acordo com o pivotamento desejado
+					matrixPivotamento = trocaLinhasDaMatriz(i, j, matrixPivotamento)
+
+				}
+			}
+			if !achamosLinhaValidaParaSubstituicao {
+				return m, false
+			}
+		}
+	}
+	return m, true
+}
+
+func achaDeterminante(m [][]float64) (detRes float64) {
+	fmt.Println("Achando determinante para matriz dada.")
+	U, _ := LUDecomposition(m)
+	det := calculateDeterminantForUMatrix(U)
+	//fmt.Printf("Determinande da matriz A deu: %v\n", det)
+	return det
+}

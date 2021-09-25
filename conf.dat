@@ -9,7 +9,7 @@
 #6.Método de Jacobi (ICOD =6).
 #7.Regressão Linear (ICOD =7).
 #8.Interpolação (ICOD =8).
-6
+7
 #IDET - 0 não calcula determinante. Maior que zero calcula o determinante.
 1
 #matrixA
@@ -43,7 +43,7 @@
 -48.75
 0
 #TOLm - tolerância máxima
-0.001
+0.00002
 #Total de pontos dados
 10
 #Lista de pontos dados
@@ -58,4 +58,4 @@
 9,17.8
 10,20.2
 #Coordenada x do ponto que se quer calcular y - TargetX
-10
+2

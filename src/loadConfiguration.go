@@ -11,6 +11,7 @@ import (
 
 var (
 	MATRIX_LINE_NUM_SEPARATOR = " "
+	POINTS_LINE_NUM_SEPARATOR = ","
 	CONFIGURATION             configuration
 )
 
@@ -19,12 +20,15 @@ func initLoadConfigurations() {
 }
 
 type configuration struct {
-	systemOrder int
-	ICOD        int
-	IDET        int
-	matrixA     [][]float64
-	vectorB     [][]float64
-	TOLm        float64
+	systemOrder    int
+	ICOD           int
+	IDET           int
+	matrixA        [][]float64
+	vectorB        [][]float64
+	TOLm           float64
+	PointsList     [][]float64
+	TargetX        float64
+	QtdPontosDados int
 }
 
 func readLineIntoFloat64Array(line string, vec *[]float64) {
@@ -42,6 +46,25 @@ func readLineIntoFloat64Array(line string, vec *[]float64) {
 	*vec = numSlice
 }
 
+func readLineIntoFloat64ArrayOfTuples(line string, vec *[][]float64) {
+	//Split the line we read so we can work on each number.
+	stringArray := strings.Split(line, POINTS_LINE_NUM_SEPARATOR)
+	if len(stringArray) > 2 {
+		errString := fmt.Sprintf("One of the lines in the points list, had more than 2 numbers: %s\n", line)
+		panic(errString)
+	}
+	numSlice := []float64{}
+	for i := range stringArray {
+		num, err := strconv.ParseFloat(stringArray[i], 64)
+		if err != nil {
+			fmt.Printf("Error parsing line %v\n", line)
+			panic(err.Error())
+		}
+		numSlice = append(numSlice, num)
+	}
+	*vec = append(*vec, numSlice)
+}
+
 func loadRunConfiguration(configurationFilePath string) (c configuration) {
 	file, err := os.Open(configurationFilePath)
 	if err != nil {
@@ -52,6 +75,7 @@ func loadRunConfiguration(configurationFilePath string) (c configuration) {
 	scanner := bufio.NewScanner(file)
 	lineNum := 0
 	matrixLine := 0
+	qtdPontosLidos := 0
 	for scanner.Scan() {
 		//Grab a line
 		line := scanner.Text()
@@ -100,6 +124,24 @@ func loadRunConfiguration(configurationFilePath string) (c configuration) {
 			if err != nil {
 				fmt.Println("There might be an error on TOLm field.")
 				panic(err.Error())
+			}
+		case 6:
+			c.QtdPontosDados, err = strconv.Atoi(line)
+			if err != nil {
+				panic("conf.dat file probably has a mistake on the QtdPontosDados field")
+			}
+		case 7:
+			readLineIntoFloat64ArrayOfTuples(line, &c.PointsList)
+			qtdPontosLidos++
+			if qtdPontosLidos == c.QtdPontosDados {
+				lineNum++
+			}
+			continue
+		case 8:
+			fmt.Printf("Reading targetX: %s\n", line)
+			c.TargetX, err = strconv.ParseFloat(line, 64)
+			if err != nil {
+				panic("conf.dat file probably has a mistake on the TargetX field")
 			}
 		}
 

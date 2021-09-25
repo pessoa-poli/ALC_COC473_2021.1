@@ -44,32 +44,36 @@ func SolucaoPeloProcedimentoIterativoDeGaussSeidel(c configuration) (vetSol [][]
 	residuo := CalcResiduo(vetSol, vetSolAnterior)
 
 	//Printando output
-	vetSolAnteriorString := CreateMatrixString(vetSolAnterior)
-	stringDepuracao := fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
+	//vetSolAnteriorString := CreateMatrixString(vetSolAnterior)
+	//stringDepuracao := fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
 	stringDepuracao2 := fmt.Sprintf("Residuo:\n%v\n", residuo)
-	Pw(OUTPUT_FILE_PATH, stringDepuracao)
+	//Pw(OUTPUT_FILE_PATH, stringDepuracao)
 	Pw(OUTPUT_FILE_PATH, stringDepuracao2)
-	Pw(OUTPUT_FILE_PATH, SEPARADOR)
-
+	//Pw(OUTPUT_FILE_PATH, SEPARADOR)
+	iterations := 0
 	for residuo > c.TOLm {
 		vetSolAnterior = vetSol
 		vetSol = achaProxVetSolDadoVetSolAtualEConfiguracoes(vetSolAnterior, c)
 		residuo = CalcResiduo(vetSol, vetSolAnterior)
 
 		//Printando output loop
-		stringDepuracao = fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
+		//stringDepuracao = fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
 		stringDepuracao2 = fmt.Sprintf("Residuo:\n%v\n", residuo)
-		Pw(OUTPUT_FILE_PATH, stringDepuracao)
+		//Pw(OUTPUT_FILE_PATH, stringDepuracao)
 		Pw(OUTPUT_FILE_PATH, stringDepuracao2)
-		Pw(OUTPUT_FILE_PATH, SEPARADOR)
+		//Pw(OUTPUT_FILE_PATH, SEPARADOR)
+		iterations++
 	}
 
 	//Printando output final
 	vetSolString := CreateMatrixString(vetSol)
-	stringDepuracao = fmt.Sprintf("VetorSolucaoFinal:\n%s\n", vetSolString)
+	stringDepuracao := fmt.Sprintf("VetorSolucaoFinal:\n%s\n", vetSolString)
 	stringDepuracao2 = fmt.Sprintf("Residuo Final:\n%v\n", residuo)
+	iteracoesTotalString := fmt.Sprintf("Iteracoes total:%v\n", iterations)
 	Pw(OUTPUT_FILE_PATH, stringDepuracao)
 	Pw(OUTPUT_FILE_PATH, stringDepuracao2)
 	Pw(OUTPUT_FILE_PATH, SEPARADOR)
+	Pw(OUTPUT_FILE_PATH, iteracoesTotalString)
+
 	return vetSol
 }

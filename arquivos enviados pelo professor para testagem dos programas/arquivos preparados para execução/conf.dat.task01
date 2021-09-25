@@ -1,5 +1,5 @@
 #Ordem do sistema de matrizes
-14
+3
 #ICOD
 #1.Decomposição LU (ICOD =1).
 #2.Decomposição deCholesky (ICOD =2).
@@ -9,9 +9,9 @@
 #6.Método de Jacobi (ICOD =6).
 #7.Regressão Linear (ICOD =7).
 #8.Interpolação (ICOD =8).
-6
-#IDET - 0 não calcula determinante. Maior que zero calcula o determinante.
 1
+#IDET - 0 não calcula determinante. Maior que zero calcula o determinante.
+0
 #matrixA
 256.4 0 -128.2 96.15 0 0 0 0 0 0 0 0 0 0
 0 192.3 -96.15 48.07 0 0 0 0 0 0 0 0 0 0
@@ -43,19 +43,19 @@
 -48.75
 0
 #TOLm - tolerância máxima
-0.001
+0.002
 #Total de pontos dados
 10
 #Lista de pontos dados
-1,2.2
-2,3.8
-3,5.6
-4,8.4
-5,10.8
-6,11.6
-7,14.4
-8,16.6
-9,17.8
-10,20.2
+1   2.2
+2   3.8
+3   5.6
+4   8.4
+5  10.8
+6  11.6
+7  14.4
+8  16.6
+9  17.8
+10  20.2
 #Coordenada x do ponto que se quer calcular y - TargetX
 10

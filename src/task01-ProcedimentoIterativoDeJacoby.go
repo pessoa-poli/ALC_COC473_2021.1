@@ -64,7 +64,7 @@ func chechaSeMatrizEDiagonalPrincipal(c configuration) (podeAplicar bool) {
 			if i == j {
 				continue
 			}
-			soma += c.matrixA[i][j]
+			soma += math.Abs(c.matrixA[i][j])
 		}
 		if aii < soma {
 			return false
@@ -87,23 +87,24 @@ func SolucaoPeloProcedimentoIterativoDeJacobi(c configuration) (vetSol [][]float
 	vetSolAnteriorString := CreateMatrixString(vetSolAnterior)
 	stringDepuracao := fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
 	stringDepuracao2 := fmt.Sprintf("Residuo:\n%v\n", residuo)
-	Pw(OUTPUT_FILE_PATH, stringDepuracao)
+	//Pw(OUTPUT_FILE_PATH, stringDepuracao)
 	Pw(OUTPUT_FILE_PATH, stringDepuracao2)
-	Pw(OUTPUT_FILE_PATH, SEPARADOR)
-
+	//Pw(OUTPUT_FILE_PATH, SEPARADOR)
+	iterations := 1
 	for residuo > c.TOLm {
 		vetSolAnterior = vetSol
 		vetSol = achaProxVetSolDadoVetSolAtualEConfiguracoes(vetSolAnterior, c)
 		residuo = CalcResiduo(vetSol, vetSolAnterior)
 
 		//Printando output loop
-		stringDepuracao = fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
+		//stringDepuracao = fmt.Sprintf("VetorSolucao:\n%s\n", vetSolAnteriorString)
 		stringDepuracao2 = fmt.Sprintf("Residuo:\n%v\n", residuo)
-		Pw(OUTPUT_FILE_PATH, stringDepuracao)
+		//Pw(OUTPUT_FILE_PATH, stringDepuracao)
 		Pw(OUTPUT_FILE_PATH, stringDepuracao2)
-		Pw(OUTPUT_FILE_PATH, SEPARADOR)
+		//Pw(OUTPUT_FILE_PATH, SEPARADOR)
+		iterations++
 	}
-
+	fmt.Printf("Iterações total: %v\n", iterations)
 	//Printando output final
 	vetSolString := CreateMatrixString(vetSol)
 	stringDepuracao = fmt.Sprintf("VetorSolucaoFinal:\n%s\n", vetSolString)

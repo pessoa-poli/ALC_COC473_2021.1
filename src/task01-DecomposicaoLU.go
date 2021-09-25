@@ -38,20 +38,22 @@ func LUDecomposition(matrix1 [][]float64) (UMatrix, LMatrix [][]float64) {
 }
 
 func solutionViaLUDecomposition(c configuration) (res [][]float64) {
+	fmt.Println("solutionViaLUDecomposition")
 	U, L := LUDecomposition(c.matrixA)
-	Lstring := CreateMatrixString(L)
+	/* Lstring := CreateMatrixString(L)
 	Ustring := CreateMatrixString(U)
 
 	//Escrevendo em arquivo
 	Pw(OUTPUT_FILE_PATH, "Matriz L encontrada\n")
 	Pw(OUTPUT_FILE_PATH, Lstring)
 	Pw(OUTPUT_FILE_PATH, "Matriz U encontrada\n")
-	Pw(OUTPUT_FILE_PATH, Ustring)
+	Pw(OUTPUT_FILE_PATH, Ustring) */
 
 	res1 := forwardSubstitution(L, c.vectorB)
 	res2 := backwardsSubstitution(U, res1)
+	//fmt.Printf("QUERO: %v\n", res2)
 	res2String := CreateMatrixString(res2)
 	//Escrevendo resultado final
-	Pw(OUTPUT_FILE_PATH, fmt.Sprintf("Resultado final:\n%s\n", res2String))
+	Pw(OUTPUT_FILE_PATH, fmt.Sprintf("Resultado final decomposicao LU:\n%s\n", res2String))
 	return res2
 }

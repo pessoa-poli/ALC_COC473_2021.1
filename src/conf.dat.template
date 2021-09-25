@@ -1,0 +1,32 @@
+#Ordem do sistema de matrizes
+3
+#ICOD
+#1.Decomposição LU (ICOD =1).
+#2.Decomposição deCholesky (ICOD =2).
+#3.Procedimento iterativo Jacobi (ICOD =3).
+#4.Procedimento iterativo Gauss-Seidel (ICOD =4).
+#5.Método da potência (ICOD =5).
+#6.Método de Jacobi (ICOD =6).
+#7.Regressão Linear (ICOD =7).
+#8.Interpolação (ICOD =8).
+1
+#IDET - 0 não calcula determinante. Maior que zero calcula o determinante.
+0
+#matrixA
+1 2 2
+4 4 2
+4 6 4
+#VetorB
+3
+6
+10
+#TOLm - tolerância máxima
+0.4
+#Total de pontos dados
+3
+#Lista de pontos dados
+-2,-27
+0,-1
+1,0
+#Coordenada x do ponto que se quer calcular y - TargetX
+10

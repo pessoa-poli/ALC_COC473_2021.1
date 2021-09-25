@@ -42,13 +42,14 @@ func LUViaCholeskyDecomposition(c configuration) (L, U [][]float64) {
 
 func SolutionViaCholeskyDecomposition(c configuration) (res [][]float64) {
 	L, U := LUViaCholeskyDecomposition(c)
-	Lstring := CreateMatrixString(L)
-	Ustring := CreateMatrixString(U)
-	//Escrevendo em arquivo
-	Pw(OUTPUT_FILE_PATH, "Matriz L encontrada\n")
-	Pw(OUTPUT_FILE_PATH, Lstring)
-	Pw(OUTPUT_FILE_PATH, "Matriz U encontrada\n")
-	Pw(OUTPUT_FILE_PATH, Ustring)
+	/*
+		Lstring := CreateMatrixString(L)
+		Ustring := CreateMatrixString(U)
+		Escrevendo em arquivo
+		Pw(OUTPUT_FILE_PATH, "Matriz L encontrada\n")
+		Pw(OUTPUT_FILE_PATH, Lstring)
+		Pw(OUTPUT_FILE_PATH, "Matriz U encontrada\n")
+		Pw(OUTPUT_FILE_PATH, Ustring) */
 	res1 := forwardSubstitution(L, c.vectorB)
 	res2 := backwardsSubstitution(U, res1)
 	res2String := CreateMatrixString(res2)
